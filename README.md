@@ -16,14 +16,29 @@ _Quelle: [Awesome Finite State Machines](https://github.com/leonardomso/awesome-
 
 ## To Read
 
+### State Machines
+
 - [Awesome Finite State Machines](https://github.com/leonardomso/awesome-fsm)
+
+### State Charts
+
 - [Welcome to the world of Statecharts](https://statecharts.github.io/)
 - [How to use statecharts](https://statecharts.github.io/how-to-use-statecharts.html)
 - [Statecharts in User Interfaces](https://statecharts.github.io/use-case-statecharts-in-user-interfaces.html)
-- [XState](https://github.com/davidkpiano/xstate)
+
+### SCXML
+
+- [SCXML Tutorials](https://gist.github.com/thure/dcffc30117b9a9800084)
+
+### JavaScript Libraries
+
+- [xstate](https://github.com/davidkpiano/xstate)
 - [jssm](https://github.com/StoneCypher/jssm)
 - [robot](https://github.com/matthewp/robot)
 - [stent](https://github.com/krasimir/stent)
 - [nanostate](https://github.com/choojs/nanostate)
 - [kingly](https://github.com/brucou/kingly)
 - [state](https://github.com/steelbreeze/state)
+- [xstate-router](https://www.npmjs.com/package/xstate-router)
+- [xstate-redux](https://www.npmjs.com/package/xstate-redux)
+- [redux-sigma](https://www.npmjs.com/package/redux-sigma)
