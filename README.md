@@ -6,23 +6,23 @@ You can find a great documentation on [State Machines](https://statecharts.githu
 
 [Wikipedia defines a finite-state machine](https://en.wikipedia.org/wiki/Finite-state_machine) (FSM) as:
 
-    an abstract machine that can be in exactly one of a finite number of states at any given time. The FSM can change from one state to another in response to some external inputs; the change from one state to another is called a transition. An FSM is defined by a list of its states, its initial state, and the conditions for each transition.
+> an abstract machine that can be in exactly one of a finite number of states at any given time.The FSM can change from one state to another in response to some external inputs; the change from one state to another is called a transition. An FSM is defined by a list of its states, its initial state, and the conditions for each transition.
 
 [Here](https://statecharts.github.io/on-off-state-machine.html) is an example of a simple state machine.
 
 ## Why would I use a State Machine?
 
-    The bugs in our software are a result of actions dispatched in a wrong state and/or at the wrong time. They leave our app in a state that we don’t know about, and this breaks our program or makes it behave incorrectly. State machines [...] protect us from reaching unknown states because we set boundaries for what can happen and when, without explicitly saying how.
+> The bugs in our software are a result of actions dispatched in a wrong state and/or at the wrong time. They leave our app in a state that we don’t know about, and this breaks our program or makes it behave incorrectly. State machines [...] protect us from reaching unknown states because we set boundaries for what can happen and when, without explicitly saying how.
 
 _Quelle: [The Rise Of The State Machines (04.01.2018)](https://www.smashingmagazine.com/2018/01/rise-state-machines/)_
 
 ## What are State Charts?
 
-    Sometimes we need something more sophisticated and complex, and that's when a finite state machine cannot help us.
-
-    Statecharts are an extension of traditional finite state machines, the main difference of statecharts is that it can have a hierarchical state, states can contain nested state inside them. The reason for this is simple, not all applications in the world can be described as flat multi numbers of states, sometimes we need to have nested states.
-
-    Statecharts also bring us a few extra features such as actions, [entry and exit actions](https://statecharts.github.io/what-is-a-statechart.html#entering-a-state-enters-one-of-its-substates), [guard conditions](https://statecharts.github.io/what-is-a-statechart.html#transitions-can-be-guarded), deferred events, etc.
+> Sometimes we need something more sophisticated and complex, and that's when a finite state machine cannot help us.
+>
+> Statecharts are an extension of traditional finite state machines, the main difference of statecharts is that it can have a hierarchical state, states can contain nested state inside them. The reason for this is simple, not all applications in the world can be described as flat multi numbers of states, sometimes we need to have nested states.
+>
+> Statecharts also bring us a few extra features such as actions, [entry and exit actions](https://statecharts.github.io/what-is-a-statechart.html#entering-a-state-enters-one-of-its-substates), [guard conditions](https://statecharts.github.io/what-is-a-statechart.html#transitions-can-be-guarded), deferred events, etc.
 
 _Quelle: [Awesome Finite State Machines](https://github.com/leonardomso/awesome-fsm#statecharts)_
 
