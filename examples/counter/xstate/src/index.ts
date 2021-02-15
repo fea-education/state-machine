@@ -15,21 +15,30 @@ type CounterEvent = { type: CounterEventType.INC } | { type: CounterEventType.DE
 
 interface CounterContext {
   count: number;
+  transitions: number;
 }
-
-const increment = (context: CounterContext) => context.count + 1;
-const decrement = (context: CounterContext) => context.count - 1;
 
 const counterMachine = Machine<CounterContext, CounterMachine, CounterEvent>({
   initial: "active",
   context: {
     count: 0,
+    transitions: 0,
   },
   states: {
     active: {
       on: {
-        [CounterEventType.INC]: { actions: assign({ count: increment }) },
-        [CounterEventType.DEC]: { actions: assign({ count: decrement }) },
+        [CounterEventType.INC]: {
+          actions: assign((context: CounterContext) => ({
+            count: context.count + 1,
+            transitions: context.transitions + 1,
+          })),
+        },
+        [CounterEventType.DEC]: {
+          actions: assign((context: CounterContext) => ({
+            count: context.count - 1,
+            transitions: context.transitions + 1,
+          })),
+        },
       },
     },
   },
@@ -40,7 +49,7 @@ const counterService = interpret(counterMachine)
     console.log(new Date(Date.now()));
     console.log(`- what did juts happen? -> Event("${state._event.name}")`);
     console.log(`- the new state is -> "${state.value}".`);
-    console.log(`- the new count is -> ${state.context.count}.`);
+    console.log(`- the new context is -> ${JSON.stringify(state.context)}.`);
     console.log(`- what to do next? -> ${state.nextEvents.join(" || ")}`);
   })
   .start();
