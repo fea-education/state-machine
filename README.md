@@ -60,9 +60,162 @@ On the other hand [Robot](https://thisrobot.life/) is
 
 In general you can say XState is more popular (there are even special libraries like [xstate-router](https://www.npmjs.com/package/xstate-router) and [xstate-redux](https://www.npmjs.com/package/xstate-redux)), has more features and is definitely the one to be challenged. If you don't need all those features and you're scared of the pretty big API, that will cost you some time when learning it, Robot might be a nice alternative.
 
-Btw. both are UI framework agnostic, but offer bindings for react: [@xstate/react](https://xstate.js.org/docs/packages/xstate-react/), [react-robot](https://thisrobot.life/integrations/react-robot.html). Though it seems, that the [typescript support of Robot is not complete](https://github.com/matthewp/robot/issues/41).
+Btw. both are UI framework agnostic, but offer bindings for react: [@xstate/react](https://xstate.js.org/docs/packages/xstate-react/), [react-robot](https://thisrobot.life/integrations/react-robot.html). Though it seems, that the [typescript support of Robot is not complete](https://github.com/matthewp/robot/issues/41) and not documented at all. 🙄
 
 Read the whole [comparison (by Robot)](https://thisrobot.life/guides/comparison-with-xstate.html) to get a better idea of their similarities and differences. It's also worth reading the [love letter to XState and statecharts](https://timdeschryver.dev/blog/my-love-letter-to-xstate-and-statecharts) and [Statecharts in User Interfaces](https://statecharts.github.io/use-case-statecharts-in-user-interfaces.html).
+
+## Experience: XState vs Robot
+
+**Goal: To compare available features and usability of the API!**
+
+I set up a little counter example for [XState](https://github.com/fea-education/state-machine/blob/master/examples/counter/xstate) and [Robot](https://github.com/fea-education/state-machine/blob/master/examples/counter/robot).
+
+### TypeScript
+
+The first difference: I didn't really get TypeScript to work with Robot. To be fair, I didn't spend and endless amount of time, trying to fix it, but because there is no official documentation for TypeScript, I opted out.
+
+With XState it's working as [documented](https://xstate.js.org/docs/guides/typescript.html).
+
+### API
+
+This is the core of the [XState counter code](https://github.com/fea-education/state-machine/blob/master/examples/counter/xstate/src/index.ts), the machine creation:
+
+```typescript
+const counterMachine = Machine<CounterContext, CounterMachine, CounterEvent>({
+  initial: "active",
+  context: {
+    count: 0,
+    transitions: 0,
+  },
+  states: {
+    active: {
+      on: {
+        [CounterEventType.INC]: {
+          actions: assign((context: CounterContext) => ({
+            count: context.count + 1,
+            transitions: context.transitions + 1,
+          })),
+        },
+        [CounterEventType.DEC]: {
+          actions: assign((context: CounterContext) => ({
+            count: context.count - 1,
+            transitions: context.transitions + 1,
+          })),
+        },
+      },
+    },
+  },
+});
+```
+
+Here you can see the [Robot counter code](https://github.com/fea-education/state-machine/blob/master/examples/counter/robot/src/index.js):
+
+```javascript
+const machine = createMachine("active", {
+  active: state(
+    transition(
+      "DEC",
+      "active",
+      reduce((ctx) => ({ count: (ctx.count ?? 0) - 1 }))
+    ),
+    transition(
+      "INC",
+      "active",
+      reduce((ctx) => ({ count: (ctx.count ?? 0) + 1 }))
+    )
+  ),
+});
+```
+
+With Robot you obviously write less code. I personally, also prefer the composable function oriented code style. Because of the reduced code, it is more expressive imo and should be easier to learn.
+
+### Features
+
+Next, I checked which information I could get out of the running machine.
+
+The possibilities of XState are well documented, which lead me to accessing all kinds of information. Whith this code:
+
+```typescript
+const counterService = interpret(counterMachine)
+  .onTransition((state) => {
+    console.log(new Date(Date.now()));
+    console.log(`- what did juts happen? -> Event("${state._event.name}")`);
+    console.log(`- the new state is -> "${state.value}".`);
+    console.log(`- the new context is -> ${JSON.stringify(state.context)}.`);
+    console.log(`- what to do next? -> ${state.nextEvents.join(" || ")}`);
+  })
+  .start();
+```
+
+I could produce this output:
+
+```plain
+2021-02-15T11:07:24.991Z
+- what did juts happen? -> Event("xstate.init")
+- the new state is -> "active".
+- the new context is -> {"count":0,"transitions":0}.
+- what to do next? -> INC || DEC
+
+2021-02-15T11:07:24.996Z
+- what did juts happen? -> Event("INC")
+- the new state is -> "active".
+- the new context is -> {"count":1,"transitions":1}.
+- what to do next? -> INC || DEC
+
+2021-02-15T11:07:24.999Z
+- what did juts happen? -> Event("INC")
+- the new state is -> "active".
+- the new context is -> {"count":2,"transitions":2}.
+- what to do next? -> INC || DEC
+
+2021-02-15T11:07:25.000Z
+- what did juts happen? -> Event("DEC")
+- the new state is -> "active".
+- the new context is -> {"count":1,"transitions":3}.
+- what to do next? -> INC || DEC
+```
+
+A similar piece of code with Robot:
+
+```javascript
+const service = interpret(machine, (s) => {
+  console.log(new Date(Date.now()));
+  /* @TODO How to do this?
+   * console.log(`- what did juts happen? -> Event("${state._event.name}")`); */
+  console.log(`- the new state is -> "${s.machine.current}".`);
+  console.log(`- the new count is -> ${s.context.count}.`);
+  console.log(
+    `- what to do next? -> ${Array.from(s.machine.state.value.transitions)
+      .map(([evt]) => evt)
+      .join(",")}`
+  );
+});
+```
+
+resulted in:
+
+```plain
+2021-02-15T11:10:46.096Z
+- the new state is -> "active".
+- the new count is -> 1.
+- what to do next? -> DEC,INC
+
+2021-02-15T11:10:46.107Z
+- the new state is -> "active".
+- the new count is -> 2.
+- what to do next? -> DEC,INC
+
+2021-02-15T11:10:46.108Z
+- the new state is -> "active".
+- the new count is -> 1.
+- what to do next? -> DEC,INC
+```
+
+As you can see, I didn't find a way to print out the event, that caused the transaition with Robot. For that I would probably have to write it in the transition code itself... I guess. Additionally printing the currently available events is a bit tricky and again not documented!
+
+### Summary
+
+The lack of TypeScript, documentation and features, kind of kills Robot for me. I'm still not happy with XStates verbose API, but at least that is something that can be learned. And who knows, maybe, some day, I'll write a little wrapper around XState with a more reduced, probably Robot inspired, API.
 
 ## To Read
 
@@ -70,12 +223,14 @@ Read the whole [comparison (by Robot)](https://thisrobot.life/guides/comparison-
 
 - [Awesome Finite State Machines](https://github.com/leonardomso/awesome-fsm)
 - [The Rise Of The State Machines (04.01.2018)](https://www.smashingmagazine.com/2018/01/rise-state-machines/)
+- [A Collection of Articles](https://fea17e86.github.io/dev-howtos?selectedTags=state-machine)
 
 ### State Charts
 
 - [Welcome to the world of Statecharts](https://statecharts.github.io/)
 - [How to use statecharts](https://statecharts.github.io/how-to-use-statecharts.html)
 - [Statecharts in User Interfaces](https://statecharts.github.io/use-case-statecharts-in-user-interfaces.html)
+- [A Collection of Articles](https://fea17e86.github.io/dev-howtos?selectedTags=state-machine)
 
 ### SCXML
 
