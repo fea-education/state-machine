@@ -28,7 +28,7 @@ _[Awesome Finite State Machines](https://github.com/leonardomso/awesome-fsm#stat
 
 In [this example](https://statecharts.github.io/on-off-statechart.html) the [simple state machine](https://statecharts.github.io/on-off-state-machine.html) from earlier is extended and turned into a state chart.
 
-There are also [executable State Charts](https://statecharts.github.io/#executable-statecharts), which means that a State Chart definition isn't just documentation but also the source of for the actual run-time behaviour.
+There are also [executable State Charts](https://statecharts.github.io/#executable-statecharts), which means that a State Chart definition isn't just documentation but also the source for the actual run-time behaviour.
 
 There is even a [W3C standard (SCXML)](https://gist.github.com/thure/dcffc30117b9a9800084) which describes how to write a XML document, defining a state machine and including actual code for the side effects.
 
