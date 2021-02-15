@@ -2,6 +2,6 @@
   "watch": [
     "src"
   ],
-  "exec": "yarn test && yarn start:app",
-  "ext": "ts"
+  "exec": "yarn start:app",
+  "ext": "js"
 }
