@@ -224,6 +224,7 @@ The lack of TypeScript, documentation and features, kind of kills Robot for me. 
 - [Awesome Finite State Machines](https://github.com/leonardomso/awesome-fsm)
 - [The Rise Of The State Machines (04.01.2018)](https://www.smashingmagazine.com/2018/01/rise-state-machines/)
 - [A Collection of Articles](https://fea17e86.github.io/dev-howtos?selectedTags=state-machine)
+- [Introduction to State Machines Using XState (free video course)](https://egghead.io/courses/introduction-to-state-machines-using-xstate)
 
 ### State Charts
 
