@@ -1,6 +1,6 @@
 import { ChangeEvent, FormEvent, useCallback, useEffect, useMemo, useState } from "react";
 
-import { getEmailError, getPasswordError } from "../../validators";
+import { getEmailError, getPasswordError } from "pages/Register/validators";
 import { FormKeys, FormProperties, FormState } from "./Form.types";
 
 export type FormValues = { [K in FormKeys]: string };

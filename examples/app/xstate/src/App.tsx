@@ -1,7 +1,7 @@
 import { BrowserRouter as Router, Switch, Redirect, Route } from "react-router-dom";
 
-import NotFound from "./pages/NotFound";
-import Register from "./pages/Register";
+import NotFound from "pages/NotFound";
+import Register from "pages/Register";
 
 function App() {
   return (
